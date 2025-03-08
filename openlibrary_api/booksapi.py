@@ -4,7 +4,10 @@ from urllib.parse import quote
 import json
 
 class API():
-    def __init__(self, requests_session: requests.Session = False):
+    def __init__(self, requests_session: requests.Session = False, debug: bool = False):
+        # Debugging
+        self.__debug: bool = debug
+        
         # In case usage of custom Retry, Proxy etcetera
         if requests_session:
             self.__session: requests.Session = requests_session
@@ -34,6 +37,16 @@ class API():
         self.__searchauthors_link: str = "/search/authors.json"
         self.__searchauthors_headers: dict[str, str] = {"Accept": "application/json"}
     
+    def logging_decorator(function):
+        def wrapper(self, *args, **kwargs):
+            if self.__debug:
+                print(f"Calling {function.__name__} with args: {args} and kwargs: {kwargs}")
+                response, status_code = function(self, *args, **kwargs)
+                print(f"Response: {function.__name__} {args} with status code: {status_code}")
+                return response
+        return wrapper
+    
+    @logging_decorator
     def get_books_by_query(self, query: str) -> dict:
         query_encoded: str = quote(query)
         search_link: str = self.__api_link.format(self.__search_link)
@@ -46,9 +59,11 @@ class API():
         )
         
         response_content: str = response.content
+        response_status_code: str = response.status_code
         response_dict: dict = json.loads(response_content)
-        return response_dict
+        return response_dict, response_status_code
         
+    @logging_decorator
     def get_authors_by_query(self, query: str) -> dict:
         query_encoded: str = quote(query)
         search_link: str = self.__api_link.format(self.__searchauthors_link)
@@ -61,9 +76,11 @@ class API():
         )
         
         response_content: str = response.content
+        response_status_code: str = response.status_code
         response_dict: dict = json.loads(response_content)
-        return response_dict
+        return response_dict, response_status_code
     
+    @logging_decorator
     def get_book_by_olid(self, olid: str) -> dict:
         book_api_link: str = self.__readbook_link.format(olid)
         request_link: str = self.__api_link.format(book_api_link)
@@ -74,9 +91,11 @@ class API():
         )
         
         response_content: str = response.content
+        response_status_code: str = response.status_code
         response_dict: dict = json.loads(response_content)
-        return response_dict
+        return response_dict, response_status_code
     
+    @logging_decorator
     def get_book_by_isbn(self, isbn: str) -> dict:
         book_api_link: str = self.__readbookisbn_link.format(isbn)
         request_link: str = self.__api_link.format(book_api_link)
@@ -87,9 +106,11 @@ class API():
         )
         
         response_content: str = response.content
+        response_status_code: str = response.status_code
         response_dict: dict = json.loads(response_content)
-        return response_dict
+        return response_dict, response_status_code
 
+    @logging_decorator
     def get_work_by_olid(self, olid: str) -> dict:
         work_api_link: str = self.__readwork_link.format(olid)
         request_link: str = self.__api_link.format(work_api_link)
@@ -100,12 +121,13 @@ class API():
         )
         
         response_content: str = response.content
+        response_status_code: str = response.status_code
         response_dict: dict = json.loads(response_content)
-        return response_dict
+        return response_dict, response_status_code
 
 # TESTING
 if __name__ == "__main__":
-    openkibrary_api = API()
+    openkibrary_api = API(debug=True)
     
     TEST_BOOK_OLID = "OL53924W"
     TEST_BOOK_ISBN = "9780062024046"
