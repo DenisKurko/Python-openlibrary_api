@@ -37,17 +37,32 @@ class API():
         self.__searchauthors_link: str = "/search/authors.json"
         self.__searchauthors_headers: dict[str, str] = {"Accept": "application/json"}
     
+    # Decorator for logging
     def logging_decorator(function):
         def wrapper(self, *args, **kwargs):
             if self.__debug:
                 print(f"Calling {function.__name__} with args: {args} and kwargs: {kwargs}")
                 response, status_code = function(self, *args, **kwargs)
                 print(f"Response: {function.__name__} {args} with status code: {status_code}")
-                return response
+                return response, status_code
+            else:
+                return function(self, *args, **kwargs)
         return wrapper
     
     @logging_decorator
-    def get_books_by_query(self, query: str) -> dict:
+    def get_books_by_query(self, query: str) -> tuple[dict, str]:
+        """Returns openlibrary dict with books by query parameter
+
+        Args:
+            query (str): Query to search by
+
+        Returns:
+            tuple (dict, str):
+                - response_dict (dict): Openlibrary books data
+                - response_status_code (str): Status code of the response
+        """
+        
+        # Setting up request parameters
         query_encoded: str = quote(query)
         search_link: str = self.__api_link.format(self.__search_link)
         search_headers: str = self.__search_headers
@@ -58,13 +73,26 @@ class API():
             params=search_params
         )
         
+        # Processing response
         response_content: str = response.content
         response_status_code: str = response.status_code
         response_dict: dict = json.loads(response_content)
         return response_dict, response_status_code
-        
+
     @logging_decorator
-    def get_authors_by_query(self, query: str) -> dict:
+    def get_authors_by_query(self, query: str) -> tuple[dict, str]:
+        """Returns openlibrary dict with authors by query parameter
+
+        Args:
+            query (str): Qurery to search by
+
+        Returns:
+            tuple (dict, str):
+                - response_dict (dict): Openlibrary authors data
+                - response_status_code (str): Status code of the response
+        """
+        
+        # Setting up request parameters
         query_encoded: str = quote(query)
         search_link: str = self.__api_link.format(self.__searchauthors_link)
         search_headers: str = self.__searchauthors_headers
@@ -75,13 +103,26 @@ class API():
             params=search_params
         )
         
+        # Processing response
         response_content: str = response.content
         response_status_code: str = response.status_code
         response_dict: dict = json.loads(response_content)
         return response_dict, response_status_code
     
     @logging_decorator
-    def get_book_by_olid(self, olid: str) -> dict:
+    def get_book_by_olid(self, olid: str) -> tuple[dict, str]:
+        """Returns openlibrary book dict by olid
+
+        Args:
+            olid (str): Olid of the book
+
+        Returns:
+            tuple (dict, str):
+                - response_dict (dict): Openlibrary book data
+                - response_status_code (str): Status code of the response
+        """
+        
+        # Setting up request parameters
         book_api_link: str = self.__readbook_link.format(olid)
         request_link: str = self.__api_link.format(book_api_link)
         request_headers: dict = self.__readbook_headers
@@ -90,13 +131,26 @@ class API():
             headers=request_headers
         )
         
+        # Processing response
         response_content: str = response.content
         response_status_code: str = response.status_code
         response_dict: dict = json.loads(response_content)
         return response_dict, response_status_code
     
     @logging_decorator
-    def get_book_by_isbn(self, isbn: str) -> dict:
+    def get_book_by_isbn(self, isbn: str) -> tuple[dict, str]:
+        """REturns openlibrary book dict by isbn
+
+        Args:
+            isbn (str): Isbn of the book
+
+        Returns:
+            tuple (dict, str):
+                - response_dict (dict): Openlibrary book data
+                - response_status_code (str): Status code of the response
+        """
+        
+        # Setting up request parameters
         book_api_link: str = self.__readbookisbn_link.format(isbn)
         request_link: str = self.__api_link.format(book_api_link)
         request_headers: dict = self.__readbookisbn_headers
@@ -105,13 +159,26 @@ class API():
             headers=request_headers
         )
         
+        # Processing response
         response_content: str = response.content
         response_status_code: str = response.status_code
         response_dict: dict = json.loads(response_content)
         return response_dict, response_status_code
 
     @logging_decorator
-    def get_work_by_olid(self, olid: str) -> dict:
+    def get_work_by_olid(self, olid: str) -> tuple[dict, str]:
+        """Openlibrary work dict by olid
+
+        Args:
+            olid (str): Olid of the work
+
+        Returns:
+            tuple (dict, str):
+                - response_dict (dict): Openlibrary work data
+                - response_status_code (str): Status code of the response
+        """
+        
+        # Setting up request parameters
         work_api_link: str = self.__readwork_link.format(olid)
         request_link: str = self.__api_link.format(work_api_link)
         request_headers: dict = self.__readwork_headers
@@ -120,6 +187,7 @@ class API():
             headers=request_headers
         )
         
+        # Processing response
         response_content: str = response.content
         response_status_code: str = response.status_code
         response_dict: dict = json.loads(response_content)
