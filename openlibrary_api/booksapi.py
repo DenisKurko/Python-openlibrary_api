@@ -127,7 +127,7 @@ class API():
 
 # TESTING
 if __name__ == "__main__":
-    openkibrary_api = API(debug=True)
+    openlibrary_api = API(debug=True)
     
     TEST_BOOK_OLID = "OL53924W"
     TEST_BOOK_ISBN = "9780062024046"
@@ -135,8 +135,8 @@ if __name__ == "__main__":
     TEST_WORK_OLID = "OL27436W"
     TEST_AUTHORS_QUERY = "Sun Tzu"
     
-    book_by_olid = openkibrary_api.get_book_by_olid(TEST_BOOK_OLID)
-    book_by_isbn = openkibrary_api.get_book_by_isbn(TEST_BOOK_ISBN)
-    books_by_query = openkibrary_api.get_books_by_query(TEST_BOOKS_QUERY)
-    work_by_olid = openkibrary_api.get_work_by_olid(TEST_WORK_OLID)
-    authors_by_query = openkibrary_api.get_authors_by_query(TEST_AUTHORS_QUERY)
+    book_by_olid = openlibrary_api.get_book_by_olid(TEST_BOOK_OLID)
+    book_by_isbn = openlibrary_api.get_book_by_isbn(TEST_BOOK_ISBN)
+    books_by_query = openlibrary_api.get_books_by_query(TEST_BOOKS_QUERY)
+    work_by_olid = openlibrary_api.get_work_by_olid(TEST_WORK_OLID)
+    authors_by_query = openlibrary_api.get_authors_by_query(TEST_AUTHORS_QUERY)
