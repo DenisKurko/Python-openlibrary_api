@@ -16,23 +16,23 @@ class API():
         
         # Read Books Requst API URL/Headers
         self.__readbook_link: str = "/books/{}"
-        self.__readbook_headers: dict[str, str] = {'accept: application/json'}
+        self.__readbook_headers: dict[str, str] = {"Accept": "application/json"}
         
         # Read Isbn Requst API URL/Headers
         self.__readbookisbn_link: str = "/isbn/{}"
-        self.__readbookisbn_headers: dict[str, str] = {'accept: application/json'}
+        self.__readbookisbn_headers: dict[str, str] = {"Accept": "application/json"}
         
         # Read Works Requst API URL/Headers
         self.__readwork_link: str = "/works/{}"
-        self.__readwork_headers: dict[str, str] = {'accept: application/json'}
+        self.__readwork_headers: dict[str, str] = {"Accept": "application/json"}
         
         # Search Requst API URL/Headers
         self.__search_link: str = "/search.json"
-        self.__search_headers: dict[str, str] = {'accept: application/json'}
+        self.__search_headers: dict[str, str] = {"Accept": "application/json"}
         
         # Search Authors Requst API URL/Headers
         self.__searchauthors_link: str = "/search/authors.json"
-        self.__searchauthors_headers: dict[str, str] = {'accept: application/json'}
+        self.__searchauthors_headers: dict[str, str] = {"Accept": "application/json"}
     
     def get_books_by_query(self, query: str) -> dict:
         query_encoded: str = quote(query)
@@ -102,6 +102,19 @@ class API():
         response_content: str = response.content
         response_dict: dict = json.loads(response_content)
         return response_dict
-    
+
+# TESTING
 if __name__ == "__main__":
-    pass
+    openkibrary_api = API()
+    
+    TEST_BOOK_OLID = "OL53924W"
+    TEST_BOOK_ISBN = "9780062024046"
+    TEST_BOOKS_QUERY = "The Art of War"
+    TEST_WORK_OLID = "OL27436W"
+    TEST_AUTHORS_QUERY = "Sun Tzu"
+    
+    book_by_olid = openkibrary_api.get_book_by_olid(TEST_BOOK_OLID)
+    book_by_isbn = openkibrary_api.get_book_by_isbn(TEST_BOOK_ISBN)
+    books_by_query = openkibrary_api.get_books_by_query(TEST_BOOKS_QUERY)
+    work_by_olid = openkibrary_api.get_work_by_olid(TEST_WORK_OLID)
+    authors_by_query = openkibrary_api.get_authors_by_query(TEST_AUTHORS_QUERY)
