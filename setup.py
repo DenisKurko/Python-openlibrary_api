@@ -7,5 +7,6 @@ setup(
     requires=[
         "requests",
         "urllib",
+        "json",
     ]
 )
