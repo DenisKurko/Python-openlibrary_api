@@ -33,9 +33,9 @@ from openlibrary_api import API
 openlib_api = API(debug=True)  # Enable debug logging
 
 # Fetch a book by ISBN
-data, status_code = api.get_book_by_isbn("3548234100")  # 1984 by George Orwell
+data, status_code = openlib_api.get_book_by_isbn("3548234100")  # 1984 by George Orwell
 
-print(f"Title: {data['title'}"
+print(f"Title: {data['title']}")
 print(f"Authors: {data['authors']}")
 ```
 
