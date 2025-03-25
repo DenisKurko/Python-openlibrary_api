@@ -14,7 +14,7 @@ This client simplifies interaction with OpenLibrary’s public API. For full API
 - [Usage Notes](#UsageNotes)
 - [Thanks](#Thanks)
 
-<h1 id=Installation> Installation</h1>
+<h1 id=Installation> Installation !!! currently unavailable !!! </h1>
 
 ---
 
